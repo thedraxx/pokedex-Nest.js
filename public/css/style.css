@@ -1,0 +1,10 @@
+html, body{
+    padding: 20px;
+    margin: 20px;
+    background-color: #fff;
+}
+
+h1{
+    color: rgb(255, 255, 255);
+    font-size: 50px;
+}
