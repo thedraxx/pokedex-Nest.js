@@ -23,10 +23,7 @@ export class PokemonService {
       const createdPokemon = await this.pokemonModel.create(createPokemonDto);
       return createdPokemon.save();
     } catch (error) {
-      if (error.code === 11000) {
-        throw new BadRequestException(`Pokemon already exists ${error.code}`);
-      }
-      throw new InternalServerErrorException(error);
+      this.handleException(error);
     }
   }
 
@@ -56,11 +53,41 @@ export class PokemonService {
     return pokemon;
   }
 
-  update(id: number, updatePokemonDto: UpdatePokemonDto) {
-    return `This action updates a #${id} pokemon`;
+  async update(term: string, updatePokemonDto: UpdatePokemonDto) {
+    const pokemon = await this.findOne(term);
+    try {
+      if (updatePokemonDto.name)
+        updatePokemonDto.name = updatePokemonDto.name.toLowerCase().trim();
+      await pokemon.updateOne(updatePokemonDto);
+      return { ...pokemon.toJSON(), ...updatePokemonDto };
+    } catch (error) {
+      this.handleException(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pokemon`;
+  async remove(id: string) {
+    // try {
+    //   const pokemon = await this.findOne(id);
+    //   await pokemon.deleteOne();
+    //   return;
+    // } catch (error) {
+    //   this.handleException(error);
+    // }
+    // return { id };
+
+    const result = await this.pokemonModel.deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      throw new BadRequestException(`Pokemon with id: ${id} not found`);
+    }
+
+    return true;
+  }
+
+  private handleException(error: any) {
+    if (error.code === 11000) {
+      throw new BadRequestException(`Pokemon already exists ${error.code}`);
+    }
+    throw new InternalServerErrorException(error);
   }
 }
