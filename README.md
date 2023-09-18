@@ -7,19 +7,28 @@
 # Execute the following commands to run the project
 
 1. Clone the repository
-2. Execute the command 
+
+2. Execute the command:
 ```
 npm install
 ```
-3. Have NestJS CLI installed globally 
+3. Have NestJS CLI installed globally:
 ```
 npm i -g @nestjs/cli
 ```
-4. Execute Database 
+4. Execute Database:
 ```
   docker-compose up -d
 ```
-5. Reconstruir la base de datos con semilla:
+5. Clone the file **.env.template** and rename it to .env
+
+6. Complete the variables in the .env file
+
+7. Execute the command:
+```
+yarn start:dev
+```
+8. Rebuild database with a seed:
 ```
 http://localhost:3000/api/v2/seed
 ```
