@@ -14,6 +14,7 @@ lerna-debug.log*
 .ENV
 /mongo
 /mongo/*
+.env.prod
 # OS
 .DS_Store
 
